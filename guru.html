@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Prime</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#0f172a;
+color:white;
+transition:.3s;
+font-family:'Inter',sans-serif;
+}
+
+.light{
+background:#f8fafc;
+color:black;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+padding:20px;
+background:#1e293b;
+}
+
+.light header{
+background:#e2e8f0;
+}
+
+button{
+padding:10px 18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:8px;
+border:none;
+}
+
+.container{
+padding:20px;
+max-width:1200px;
+margin:auto;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:15px;
+margin-top:20px;
+box-shadow:0 0 15px rgba(0,0,0,.3);
+}
+
+.light .card{
+background:grey;
+}
+
+.hidden{
+display:none;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.alert{
+background:#dc2626;
+padding:12px;
+border-radius:8px;
+margin-top:10px;
+}
+
+.normal{
+background:#16a34a;
+padding:12px;
+border-radius:8px;
+margin-top:10px;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+td,th{
+padding:10px;
+border:1px solid gray;
+text-align:center;
+}
+
+.login-box{
+max-width:400px;
+margin:100px auto;
+padding:30px;
+border-radius:20px;
+background:#1e293b;
+}
+
+.light .login-box{
+background:grey;
+}
+
+h1,h2,h3{
+margin-bottom:15px;
+}
+.stat-card{
+backdrop-filter: blur(20px);
+border-radius:25px;
+background:rgba(255,255,255,0.08);
+box-shadow:0 8px 30px rgba(0,0,0,.15);
+}
+
+.status-dot{
+width:12px;
+height:12px;
+border-radius:50%;
+display:inline-block;
+margin-right:8px;
+}
+
+.green{background:#22c55e;}
+.red{background:#ef4444;}
+.yellow{background:#facc15;}
+
+input{
+border-radius:15px;
+}
+.status-dot{
+width:12px;
+height:12px;
+border-radius:50%;
+display:inline-block;
+margin-right:8px;
+}
+
+.green{
+background:#22c55e;
+}
+
+.red{
+background:#ef4444;
+}
+#patientModal{
+
+display:none;
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.75);
+
+justify-content:center;
+align-items:center;
+
+z-index:9999;
+}
+
+.modal-card{
+
+background:#1e3a8a;
+
+padding:30px;
+
+border-radius:25px;
+
+width:500px;
+
+color:white;
+
+box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.action-buttons{
+
+display:flex;
+
+flex-direction:column;
+
+gap:8px;
+
+align-items:center;
+
+}
+
+
+.action-buttons button{
+
+width:110px;
+
+padding:8px;
+
+border:none;
+
+border-radius:12px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+}
+td{
+
+vertical-align:middle;
+
+text-align:center;
+
+}
+.theme-btn{position:relative;width:58px;height:30px;border:none;border-radius:30px;background:#cbd5e1;cursor:pointer;transition:.3s;display:flex;align-items:center;padding:4px;}
+.theme-btn::before{content:'';width:22px;height:22px;background:white;border-radius:50%;position:absolute;left:4px;transition:.3s;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.light .theme-btn{background:#2563eb;}
+.light .theme-btn::before{left:32px;}
+
+/* LIGHT MODE */
+
+body.light{
+
+background:#f5f7fb !important;
+
+color:black !important;
+
+}
+
+
+/* Cards */
+
+body.light .card{
+
+background:white !important;
+
+color:black !important;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+
+/* Tables */
+
+body.light table{
+
+background:white !important;
+
+color:black !important;
+
+}
+
+
+body.light td,
+body.light th{
+
+color:black !important;
+
+border-color:#d1d5db !important;
+
+}
+
+
+/* Inputs */
+
+body.light input{
+
+background:#f9fafb !important;
+
+color:black !important;
+
+border:1px solid #d1d5db !important;
+
+}
+
+
+/* Alerts */
+
+body.light .alert{
+
+background:#fee2e2 !important;
+
+color:#991b1b !important;
+
+}
+footer{
+    background:#014dfd;
+    color:#cbd5e1;
+    text-align:center;
+    padding:25px;
+    
+}
+.condition-table{
+
+width:100%;
+
+margin-top:15px;
+
+border-collapse:collapse;
+
+}
+
+
+.condition-table th,
+.condition-table td{
+
+padding:14px;
+
+text-align:center;
+
+border:1px solid rgba(255,255,255,.2);
+
+}
+#conditionModal{
+
+display:none;
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.75);
+display:flex;
+justify-content:center;
+align-items:center;
+
+z-index:99999;
+
+}
+.logo{
+    font-size:1.7rem;
+    font-weight:800;
+    color:#2563eb;
+    letter-spacing:0.5px;
+    text-shadow:0 2px 8px rgba(37,99,235,0.15);
+}
+
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Health Prime</div>
+
+    <div style="display:flex; gap:10px; align-items:center;">
+
+        <button id="themeToggle" class="theme-btn"></button>
+
+        <button 
+            onclick="logout()" 
+            id="logoutBtn"
+            style="background:#ef4444;color:white;display:none;">
+            ➜]
+        </button>
+
+    </div>
+</header>
+
+
+<!-- LOGIN -->
+<div id="loginPage" class="container">
+<div class="login-box">
+
+<h1>Login</h1>
+
+<select id="role">
+<option value="patient">Patient</option>
+<option value="doctor">Doctor</option>
+</select>
+
+<input id="userid" placeholder="Enter ID">
+<input id="password" type="password" placeholder="Enter Password">
+
+<button onclick="login()" style="width:100%;margin-top:15px;background:#3b82f6;color:white;">
+Login
+</button>
+
+<br><br>
+
+<p>Patient → PAT001 / patient123</p>
+<p>Doctor → DOC001 / doctor123</p>
+
+</div>
+<footer>
+    Health Prime | Designed and Developed by Guru Malkhed
+</footer>
+</div>
+
+
+
+
+<!-- PATIENT DASHBOARD -->
+<div id="patientDashboard" class="container hidden">
+
+<h1>Patient Dashboard</h1>
+<div class="card">
+    <h2>Normal Health Readings</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Reading</th>
+                <th>Normal Range</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Blood Pressure (BP)</td>
+                <td>90 - 140 mmHg</td>
+            </tr>
+
+            <tr>
+                <td>Oxygen Level</td>
+                <td>95% - 100%</td>
+            </tr>
+
+            <tr>
+                <td>Heart Rate</td>
+                <td>60 - 100 bpm</td>
+            </tr>
+
+            <tr>
+                <td>Sugar Level</td>
+                <td>70 - 140 mg/dL</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="card">
+
+<input id="name" placeholder="Patient Name" tabindex="1">
+<input id="bp" type="number" placeholder="BP" tabindex="2">
+<input id="oxygen" type="number" placeholder="Oxygen Level" tabindex="3">
+<input id="heart" type="number" placeholder="Heart Rate" tabindex="4">
+<input id="sugar" type="number" placeholder="Sugar Level" tabindex="5">
+<input id="bedNumber" placeholder="Enter Bed Number" tabindex="6">
+<input
+type="file"
+id="patientPhoto"
+accept="image/*"
+>
+
+<button onclick="submitVitals()" style="background:#10b981;color:white;">
+Submit Readings
+</button>
+
+<div id="patientStatus"></div>
+
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;">
+</div>
+<footer>
+    Health Prime | Designed and Developed by Guru Malkhed
+</footer>
+</div>
+
+
+
+<!-- DOCTOR DASHBOARD -->
+
+<div id="doctorDashboard" class="container hidden">
+  <div id="patientModal" class="hidden">
+
+    <div class="modal-card">
+
+        <h2>Patient Medical Record</h2>
+
+        <div id="patientDetails"></div>
+
+        <button onclick="closePatientRecord()">
+            Close
+        </button>
+
+    </div>
+>
+</div>
+
+<h1 style="margin-bottom:20px;">Doctor Dashboard</h1>
+
+<!-- Top Stats -->
+<div class="grid">
+
+    <div class="card stat-card">
+        <h3>Total Patients</h3>
+        <h1 id="totalPatients">0</h1>
+    </div>
+
+    <div class="card stat-card">
+        <h3>Critical Alerts</h3>
+        <h1 id="criticalCount">0</h1>
+    </div>
+    <button
+onclick="openConditionModal()"
+style="
+margin-top:20px;
+background:#2563eb;
+color:white;
+"
+>
+
+📋 View Health Conditions
+
+</button>
+<div id="conditionModal">
+
+    <div class="modal-card">
+
+        <h2>Health Condition Reference</h2>
+
+        <table class="condition-table">
+
+            <tr>
+                <th>Reading</th>
+                <th>🟢 Stable</th>
+                <th>🟡 Observation</th>
+                <th>🔴 Critical</th>
+            </tr>
+
+            <tr>
+                <td>BP</td>
+                <td>90-140</td>
+                <td>141-150</td>
+                <td>>150</td>
+            </tr>
+
+            <tr>
+                <td>Oxygen</td>
+                <td>95-100%</td>
+                <td>90-94%</td>
+                <td><90%</td>
+            </tr>
+
+            <tr>
+                <td>Heart Rate</td>
+                <td>60-100</td>
+                <td>50-59 / 101-120</td>
+                <td><50 / >120</td>
+            </tr>
+
+            <tr>
+                <td>Sugar</td>
+                <td>70-140</td>
+                <td>141-200</td>
+                <td>>200</td>
+            </tr>
+
+        </table>
+
+        <br>
+
+        <button onclick="closeConditionModal()">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- Monitoring -->
+<div class="card">
+
+    <h2>Patient Monitoring</h2>
+
+    <input 
+        id="searchPatient"
+        placeholder="Search Patient or Bed Number..."
+        onkeyup="searchPatients()"
+    >
+
+    <table>
+
+        <thead>
+            <tr>
+                <th></th>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Bed</th>
+                <th>Status</th>
+                <th>time</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="tableBody"></tbody>
+
+    </table>
+
+    
+</div>
+
+
+<!-- Alerts -->
+<div class="card">
+
+    <h2>Live Alerts</h2>
+
+    <div id="alertsBox"></div>
+
+</div>
+
+
+<script>
+// ======================
+// HEALTH PRIME DATA
+// ======================
+
+let patients = [
+
+{
+
+name:"Sanvarya",
+bed:"B-123",
+
+bp:120,
+oxygen:98,
+heart:78,
+sugar:110,
+
+status:"Stable",
+
+photo:
+"sunny.jpeg",
+
+time:new Date().toLocaleTimeString()
+},
+
+{
+name:"Priya",
+bed:"B-142",
+bp:155,
+oxygen:89,
+heart:112,
+sugar:180,
+
+status:"Critical",
+
+photo:
+"https://randomuser.me/api/portraits/women/44.jpg",
+
+time:new Date().toLocaleTimeString()
+},
+{
+name:"Amruth",
+bed:"B-149",
+
+bp:130,
+oxygen:100,
+heart:112,
+sugar:180,
+
+status:"Observation",
+
+photo:
+"img/amu.jpeg",
+
+time:new Date().toLocaleTimeString()
+},
+{
+name:"Chandu",
+bed:"E-123",
+
+bp:130,
+oxygen:100,
+heart:112,
+sugar:180,
+
+status:"Observation",
+
+photo:
+"chandu.jpeg",
+
+time:new Date().toLocaleTimeString()
+},
+{
+name:"Ananya",
+bed:"D-213",
+
+bp:130,
+oxygen:100,
+heart:112,
+sugar:180,
+
+status:"Critical",
+
+photo:
+"ananya.jpeg",
+
+time:new Date().toLocaleTimeString()
+},
+];
+
+let patientHistory = {};
+
+let chart = null;
+
+
+const emergencySound =
+new Audio(
+'https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg'
+);
+
+
+// ======================
+// THEME
+// ======================
+
+function toggleTheme(){
+
+document.body.classList.toggle("light");
+
+}
+
+
+// ======================
+// LOGIN
+// ======================
+
+function login(){
+
+const role =
+document.getElementById("role").value;
+
+const id =
+document.getElementById("userid").value.trim();
+
+const pass =
+document.getElementById("password").value.trim();
+
+
+if(
+role==="patient" &&
+id==="PAT001" &&
+pass==="patient123"
+){
+
+showPage("patient");
+
+}
+
+else if(
+role==="doctor" &&
+id==="DOC001" &&
+pass==="doctor123"
+){
+
+showPage("doctor");
+
+loadDoctorDashboard();
+
+}
+
+else{
+
+alert("Invalid credentials");
+
+}
+
+}
+
+
+
+function showPage(type){
+
+document.getElementById("loginPage")
+.classList.add("hidden");
+
+document.getElementById("patientDashboard")
+.classList.add("hidden");
+
+document.getElementById("doctorDashboard")
+.classList.add("hidden");
+
+
+document.getElementById("logoutBtn")
+.style.display="block";
+
+
+if(type==="patient"){
+
+document.getElementById("patientDashboard")
+.classList.remove("hidden");
+
+}
+
+else{
+
+document.getElementById("doctorDashboard")
+.classList.remove("hidden");
+
+document.getElementById("patientModal")
+.style.display="none";
+
+}
+
+}
+
+
+
+// ======================
+// LOGOUT
+// ======================
+
+function logout(){
+
+document.getElementById("loginPage")
+.classList.remove("hidden");
+
+document.getElementById("patientDashboard")
+.classList.add("hidden");
+
+document.getElementById("doctorDashboard")
+.classList.add("hidden");
+
+
+document.getElementById("logoutBtn")
+.style.display="none";
+
+}
+
+
+
+// ======================
+// LIVE HEALTH CHECK
+// ======================
+
+function checkLiveHealth(){
+
+const bp =
+Number(document.getElementById("bp").value);
+
+const oxygen =
+Number(document.getElementById("oxygen").value);
+
+const heart =
+Number(document.getElementById("heart").value);
+
+const sugar =
+Number(document.getElementById("sugar").value);
+
+
+let status = "🟢 Stable";
+
+
+if(
+bp > 150 ||
+oxygen < 90 ||
+heart > 120 ||
+heart < 50 ||
+sugar > 200 ||
+sugar < 60
+
+
+){
+
+status = "🔴 Critical";
+
+}
+
+else if(
+bp > 140 ||
+oxygen < 95 ||
+heart > 100 ||
+heart < 60||
+sugar > 140 ||
+sugar < 70
+){
+
+status = "🟡 Observation";
+
+}
+
+
+document.getElementById("liveStatus")
+.innerHTML = `<h3>${status}</h3>`;
+
+}
+
+
+
+// ======================
+// SUBMIT VITALS
+// ======================
+
+function submitVitals(){
+
+const name =
+document.getElementById("name").value.trim();
+
+const bed =
+document.getElementById("bedNumber").value.trim();
+
+
+const bp =
+Number(document.getElementById("bp").value);
+
+const oxygen =
+Number(document.getElementById("oxygen").value);
+
+const heart =
+Number(document.getElementById("heart").value);
+
+const sugar =
+Number(document.getElementById("sugar").value);
+
+
+
+const fileInput =
+document.getElementById("patientPhoto");
+
+
+if(
+!name ||
+!bed ||
+!bp ||
+!oxygen ||
+!heart ||
+!sugar
+){
+
+alert("Please fill all fields");
+
+return;
+
+}
+
+
+let status = "Stable";
+
+
+if(
+bp > 150 ||
+oxygen < 90
+){
+
+status = "Critical";
+
+emergencySound.play();
+
+}
+
+else if(
+bp > 140 ||
+oxygen < 95
+){
+
+status = "Observation";
+
+}
+
+
+let patientPhoto =
+"https://randomuser.me/api/portraits/lego/1.jpg";
+
+
+if(fileInput.files[0]){
+
+patientPhoto =
+URL.createObjectURL(
+fileInput.files[0]
+);
+
+}
+
+
+
+patients.push({
+
+name:name,
+bed:bed,
+
+bp:bp,
+oxygen:oxygen,
+heart:heart,
+sugar:sugar,
+
+status:status,
+
+photo:patientPhoto,
+
+time:new Date().toLocaleTimeString()
+
+});
+
+
+
+if(!patientHistory[name]){
+
+patientHistory[name] = [];
+
+}
+
+
+patientHistory[name].push({
+
+bp,
+oxygen,
+heart,
+sugar
+
+});
+
+
+
+loadDoctorDashboard();
+
+
+
+document.getElementById("patientStatus")
+.innerHTML =
+`<div class="normal">
+Submitted successfully
+</div>`;
+
+
+
+clearPatientForm();
+
+}
+
+
+
+// ======================
+// CLEAR FORM
+// ======================
+
+function clearPatientForm(){
+
+document.getElementById("name").value="";
+document.getElementById("bedNumber").value="";
+
+document.getElementById("bp").value="";
+document.getElementById("oxygen").value="";
+
+document.getElementById("heart").value="";
+document.getElementById("sugar").value="";
+
+document.getElementById("patientPhoto").value="";
+
+document.getElementById("liveStatus")
+.innerHTML="";
+
+}
+
+
+
+// ======================
+// DOCTOR DASHBOARD
+// ======================
+
+function loadDoctorDashboard(){
+
+document.getElementById("totalPatients")
+.innerText = patients.length;
+
+
+const criticalPatients =
+patients.filter(
+p => p.status==="Critical"
+);
+
+
+document.getElementById("criticalCount")
+.innerText =
+criticalPatients.length;
+
+
+const tableBody =
+document.getElementById("tableBody");
+
+const alertsBox =
+document.getElementById("alertsBox");
+
+
+tableBody.innerHTML="";
+alertsBox.innerHTML="";
+
+
+patients.forEach(patient=>{
+
+let statusUI = "";
+
+
+if(patient.status==="Critical"){
+
+statusUI =
+'<span class="status-dot red"></span> Critical';
+
+}
+
+else if(
+patient.status==="Observation"
+){
+
+statusUI =
+'<span class="status-dot yellow"></span> Observation';
+
+}
+
+else{
+
+statusUI =
+'<span class="status-dot green"></span> Stable';
+
+}
+
+
+
+tableBody.innerHTML += `
+
+<tr>
+<td>
+
+<td>
+<img
+src="${
+patient.photo ||
+'https://randomuser.me/api/portraits/lego/1.jpg'
+}"
+
+onerror="
+this.src='https://randomuser.me/api/portraits/lego/1.jpg'
+"
+
+style="
+width:55px;
+height:55px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:2px solid white;
+"
+
+>
+
+</td>
+
+</td>
+
+<td>${patient.name}</td>
+
+<td>${patient.bed}</td>
+
+<td>${statusUI}</td>
+
+<td>${patient.time}</td>
+
+<td>
+
+<div class="action-buttons">
+
+<button
+onclick="openPatient('${patient.name}')"
+>
+Open
+</button>
+
+<button
+onclick="dischargePatient('${patient.name}')"
+>
+Discharge
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+
+
+if(
+patient.status==="Critical"
+){
+
+alertsBox.innerHTML += `
+
+<div class="alert">
+
+⚠ Bed ${patient.bed}
+(${patient.name})
+
+needs immediate attention
+
+</div>
+
+`;
+
+}
+
+});
+
+}
+
+
+
+// ======================
+// SEARCH
+// ======================
+
+function searchPatients(){
+
+const searchValue =
+document.getElementById("searchPatient")
+.value
+.toLowerCase();
+
+
+const rows =
+document.querySelectorAll(
+"#tableBody tr"
+);
+
+
+rows.forEach(row=>{
+
+const text =
+row.innerText.toLowerCase();
+
+
+row.style.display =
+text.includes(searchValue)
+? ""
+: "none";
+
+});
+
+}
+
+
+
+// ======================
+// PATIENT RECORD
+// ======================
+
+function openPatient(name){
+
+const patient =
+patients.find(
+p => p.name===name
+);
+
+
+if(!patient) return;
+
+
+let recommendation = "";
+
+
+if(patient.oxygen < 90){
+
+recommendation =
+"⚠ Immediate oxygen support recommended.";
+
+}
+
+
+
+document.getElementById("patientDetails")
+.innerHTML = `
+
+<p><b>Name:</b> ${patient.name}</p>
+
+<p><b>Bed:</b> ${patient.bed}</p>
+
+<hr><br>
+
+<p><b>BP:</b> ${patient.bp}</p>
+
+<p><b>Oxygen:</b> ${patient.oxygen}%</p>
+
+<p><b>Heart:</b> ${patient.heart}</p>
+
+<p><b>Sugar:</b> ${patient.sugar}</p>
+
+<br>
+
+<p><b>Status:</b> ${patient.status}</p>
+
+<p>${recommendation}</p>
+
+`;
+
+
+document.getElementById("patientModal")
+.style.display = "flex";
+
+}
+
+
+
+function closePatientRecord(){
+
+document.getElementById("patientModal")
+.style.display = "none";
+
+}
+
+
+
+// ======================
+// DISCHARGE
+// ======================
+
+function dischargePatient(name){
+
+patients =
+patients.filter(
+p => p.name!==name
+);
+
+
+loadDoctorDashboard();
+
+
+}
+
+document.getElementById("themeToggle").onclick = function () {
+    document.body.classList.toggle("light");
+};
+function openConditionModal(){
+
+document.getElementById(
+"conditionModal"
+).style.display = "flex";
+
+}
+
+
+function closeConditionModal(){
+
+document.getElementById(
+"conditionModal"
+).style.display = "none";
+
+}
+document.querySelectorAll("input").forEach((input, index, inputs) => {
+    input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+
+            const next = inputs[index + 1];
+            if (next) {
+                next.focus();
+            }
+        }
+    });
+});
+</script>
+</body>
+<footer>
+    Health Prime | Designed and Developed by Guru Malkhed
+</footer>
+</html>
